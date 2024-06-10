@@ -1,0 +1,35 @@
+{
+  "canisters": {
+    "backend": {
+      "build": "npx azle backend",
+      "candid": "src/backend/backend.did",
+      "gzip": true,
+      "main": "src/backend/src/index.ts",
+      "tech_stack": {
+        "cdk": {
+          "azle": {}
+        },
+        "language": {
+          "javascript": {},
+          "typescript": {}
+        }
+      },
+      "type": "custom",
+      "wasm": ".azle/backend/backend.wasm"
+    },
+    "frontend": {
+      "dependencies": ["backend"],
+      "entrypoint": "src/frontend/out/index.html",
+      "source": ["src/frontend/out"],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
