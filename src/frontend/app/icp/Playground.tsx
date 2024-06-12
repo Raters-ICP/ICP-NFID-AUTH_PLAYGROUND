@@ -1,31 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SignIdentity } from "@dfinity/agent";
-import { IdleOptions } from "@dfinity/auth-client";
 import { useInternetIdentity } from "ic-use-internet-identity";
 
 export function Playground() {
-  type NFIDConfig = {
-    origin?: string;
-    application?: {
-      name?: string;
-      logo?: string;
-    };
-    identity?: SignIdentity;
-    keyType?: "ECDSA" | "Ed25519";
-    idleOptions?: IdleOptions;
-  };
-
   const { isLoggingIn, login, clear, identity, loginStatus } =
     useInternetIdentity();
 
   const [info, setInfo] = useState("");
   const [sign, setSign] = useState("");
   const [pubkey, setPubkey] = useState("");
-  const [principal, setPrincipal] = useState("");
   const [signedPrincipal, setSignedPrincipal] = useState("");
   const [verif, setVerif] = useState(false);
+  const [principal, setPrincipal] = useState("");
 
   const handleGetDelegation = () => {
     if (identity) {
@@ -50,6 +37,9 @@ export function Playground() {
   useEffect(() => {
     if (identity) {
       handleGetDelegation();
+      const principalArr = identity.getPrincipal();
+      const principalHex = arrayBufferToHex((principalArr as any)._arr);
+      setPrincipal(principalHex);
     }
   }, [identity]);
 
@@ -152,6 +142,14 @@ export function Playground() {
           value={info}
           className="text-black rounded-md w-96 h-32 p-6"
           disabled={true}
+        />
+      </div>
+      <div className="flex flex-col gap-6 mt-10">
+        <p>Principal</p>
+        <textarea
+          className="text-black rounded-md w-96 h-32 p-6"
+          disabled={true}
+          value={principal}
         />
       </div>
       <div className="flex flex-col gap-6 mt-10">
